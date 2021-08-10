@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/Detail.css"],"names":[],"mappings":"AAAA,WACE,SACF,CAEA,kBACE,SAAU,CACV,kBACF","file":"3.acb2daa5.chunk.css","sourcesContent":[".wow-enter {\r\n  opacity: 0;\r\n}\r\n\r\n.wow-enter-active {\r\n  opacity: 1;\r\n  transition: all 500ms;\r\n}\r\n"]}
