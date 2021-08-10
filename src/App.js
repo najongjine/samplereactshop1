@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useContext, lazy, Suspense } from "react";
 import { Nav, Navbar, Container, NavDropdown, Button } from "react-bootstrap";
 import "./App.css";
 import Data from "./data/data.js";
 import { Link, Route, Switch } from "react-router-dom";
-import Detail from "./Detail.js";
 import axios from "axios";
+//import Cart from "./Cart.js";
+let Cart = lazy(() => {
+  return import("./Cart.js");
+});
+//import Detail from "./Detail.js";
+let Detail = lazy(() => {
+  return import("./Detail.js");
+});
+//같은값을 공유하는 범위
+export let 재고context = React.createContext();
 
 function App() {
   let [shoes, shoes변경] = useState(Data);
@@ -63,12 +72,14 @@ function App() {
       <Switch>
         <Route exact path="/">
           <div className="container">
-            <div className="row">
-              {shoes.map((item, i) => {
-                return <Card shoes={item} i={i} key={i} />;
-              })}
+            {/* value 부분엔 공유하고 싶은 값 */}
+            <재고context.Provider value={재고}>
+              <div className="row">
+                {shoes.map((item, i) => {
+                  return <Card shoes={item} i={i} key={i} />;
+                })}
 
-              {/* {shoes.map((item, i) => {
+                {/* {shoes.map((item, i) => {
                 return (
                   <div className="col-md-4">
                     <img
@@ -84,7 +95,8 @@ function App() {
                   </div>
                 );
               })} */}
-            </div>
+              </div>
+            </재고context.Provider>
             <button
               className="btn btn-primary"
               onClick={() => {
@@ -106,7 +118,14 @@ function App() {
           </div>
         </Route>
         <Route path="/detail/:id">
-          <Detail shoes={shoes} 재고={재고} 재고변경={재고변경} />
+          <Suspense fallback={<div>loading...</div>}>
+            <Detail shoes={shoes} 재고={재고} 재고변경={재고변경} />
+          </Suspense>
+        </Route>
+        <Route path="/cart">
+          <Suspense fallback={<div>loading...</div>}>
+            <Cart />
+          </Suspense>
         </Route>
       </Switch>
     </div>
